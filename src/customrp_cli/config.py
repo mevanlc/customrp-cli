@@ -48,7 +48,7 @@ LOG_LEVELS = ("debug", "info", "warning", "error")
 DATETIME_EXAMPLE = "2026-01-01T12:00:00"
 
 _SECTIONS = ("presence", "connection", "run", "logging")
-_PRESENCE_TEXT = ("application_id", "name", "details", "details_url", "state", "state_url")
+_PRESENCE_TEXT = ("application_id", "name", "details", "details_url", "state", "state_url", "party_id")
 _PRESENCE_KEYS = _PRESENCE_TEXT + ("type", "status_display", "party_size", "party_max", "timestamps",
                                    "custom_start", "custom_end", "proxy_discord_cdn", "large_image",
                                    "small_image", "buttons")
@@ -414,6 +414,8 @@ details_url = {v(p.details_url)}
 state = {v(p.state)}
 state_url = {v(p.state_url)}
 
+# Party identifier sent to Discord. Empty uses "CustomRP".
+party_id = {v(p.party_id)}
 # Shown as "(1 of 4)" with the playing type, when both are above 0
 party_size = {v(p.party_size)}
 party_max = {v(p.party_max)}

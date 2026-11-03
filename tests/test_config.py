@@ -33,6 +33,7 @@ details = "Details"
 details_url = "example.com/d"
 state = "State"
 state_url = "https://example.com/s"
+party_id = "room-123"
 party_size = 2
 party_max = 5
 timestamps = "custom"
@@ -82,7 +83,7 @@ def test_full_file():
     assert p.type == ActivityType.LISTENING
     assert p.status_display == StatusDisplay.DETAILS
     assert (p.name, p.details, p.details_url, p.state) == ("Name", "Details", "example.com/d", "State")
-    assert (p.party_size, p.party_max) == (2, 5)
+    assert (p.party_id, p.party_size, p.party_max) == ("room-123", 2, 5)
     assert p.timestamps == TimestampMode.CUSTOM
     assert p.custom_start == datetime(2026, 1, 1, 12)
     assert p.custom_end == datetime(2026, 1, 2, 12, tzinfo=timezone(timedelta(hours=2)))
@@ -127,10 +128,11 @@ def test_unknown_keys_get_suggestions():
 
 
 def test_wrong_types_are_all_reported():
-    problems = problems_of('[presence]\ndetails = 5\nparty_size = "two"\nproxy_discord_cdn = "yes"\n'
+    problems = problems_of('[presence]\ndetails = 5\nparty_id = 123\nparty_size = "two"\nproxy_discord_cdn = "yes"\n'
                            'large_image = "logo"\n[connection]\nretry_interval = true')
     assert problems == [
         "presence.details: expected a string, got a whole number",
+        "presence.party_id: expected a string, got a whole number",
         "presence.party_size: expected a whole number, got a string",
         "presence.large_image: expected a table, got a string",
         "presence.proxy_discord_cdn: expected true or false, got a string",

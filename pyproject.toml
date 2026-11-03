@@ -22,7 +22,8 @@ classifiers = [
 ]
 # requirements.txt installs the same customrp-core version from GitHub instead of PyPI
 dependencies = [
-    "customrp-core>=0.1.2,<0.2",
+    "customrp-core",
+    #    "customrp-core>=0.1.2,<0.2",
     "tomli>=1.1; python_version < '3.11'",
 ]
 
@@ -45,3 +46,6 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.uv.sources]
+customrp-core = { path = "../customrp-core" }

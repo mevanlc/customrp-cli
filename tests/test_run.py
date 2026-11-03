@@ -26,10 +26,13 @@ def start_in_thread(*argv):
 
 
 def test_run_reload_and_stop(fake_discord, config_path):
-    write_config(config_path, fake_discord.pipe, "First")
+    write_config(config_path, fake_discord.pipe, "First",
+                 extra='party_id = "room-123"\nparty_size = 1\nparty_max = 4')
     thread, result = start_in_thread("run")
 
-    assert fake_discord.wait_for_activity()["details"] == "First"
+    activity = fake_discord.wait_for_activity()
+    assert activity["details"] == "First"
+    assert activity["party"] == {"id": "room-123", "size": [1, 4]}
     instance = Instance(paths.state_dir())
     assert wait_until(lambda: instance.read_status().get("state") == "connected")
     assert instance.read_status()["user"] == "tester"
@@ -37,8 +40,11 @@ def test_run_reload_and_stop(fake_discord, config_path):
 
     # Saving the config file updates the presence without a restart
     time.sleep(0.05)  # Make sure the modification time changes
-    write_config(config_path, fake_discord.pipe, "Second")
-    assert fake_discord.wait_for_activity(2)["details"] == "Second"
+    write_config(config_path, fake_discord.pipe, "Second",
+                 extra='party_id = "room-456"\nparty_size = 1\nparty_max = 4')
+    activity = fake_discord.wait_for_activity(2)
+    assert activity["details"] == "Second"
+    assert activity["party"] == {"id": "room-456", "size": [1, 4]}
 
     # A broken edit is ignored; the presence stays as it was
     config_path.write_text('[presence]\ndetails = "x"\n', encoding="utf-8")

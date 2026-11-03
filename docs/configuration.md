@@ -47,6 +47,7 @@ What to show. These are CustomRP's fields; its limits apply, and they're checked
 | `details_url` | string | `""` | Makes the first line a link |
 | `state` | string | `""` | Second line, up to 128 bytes |
 | `state_url` | string | `""` | Makes the second line a link |
+| `party_id` | string | `""` | Party identifier sent to Discord when the party is shown. Empty uses `"CustomRP"`. |
 | `party_size` | integer | `0` | Shown as "(1 of 4)" after the state; only with `playing`, and only when both numbers are above 0 |
 | `party_max` | integer | `0` | Raised to `party_size` if it's smaller |
 | `timestamps` | string | `"since_last_connection"` | See [Timestamps](#timestamps) |

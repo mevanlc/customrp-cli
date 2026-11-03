@@ -74,11 +74,13 @@ def test_check_reports_every_bad_value(config_path, capsys):
 
 def test_preview(config_path, capsys):
     config_path.write_text('[presence]\napplication_id = "42"\ndetails = "Hello"\n'
+                           'party_id = "room-123"\nparty_size = 1\nparty_max = 4\n'
                            '[presence.large_image]\nkey = "https://cdn.discordapp.com/a.png"\n')
     assert run("preview") == 0
     data = json.loads(capsys.readouterr().out)
     assert data["application_id"] == "42"
     assert data["activity"]["details"] == "Hello"
+    assert data["activity"]["party"] == {"id": "room-123", "size": [1, 4]}
     assert data["activity"]["assets"]["large_image"] == "https://customrp.xyz/proxy/a.png"
 
 
